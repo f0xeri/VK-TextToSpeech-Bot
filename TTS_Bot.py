@@ -7,7 +7,7 @@ from gtts import gTTS
 import detectlanguage
 
 def main():
-    VkApiKey = 'VK API KEY
+    VkApiKey = 'VK API KEY'
     session = requests.Session()
     vk_session = vk_api.VkApi(token=VkApiKey)
     detectlanguage.configuration.api_key = 'Language Detection API KEY'
