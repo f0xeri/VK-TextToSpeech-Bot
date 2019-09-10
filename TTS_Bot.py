@@ -7,17 +7,24 @@ from gtts import gTTS
 import detectlanguage
 
 def main():
+    #авторизация
     VkApiKey = 'VK API KEY'
     session = requests.Session()
     vk_session = vk_api.VkApi(token=VkApiKey)
-    detectlanguage.configuration.api_key = 'Language Detection API KEY'
+    detectlanguage.configuration.api_key = 'Language Detection API KEY' 
     vk = vk_session.get_api()
     upload = VkUpload(vk_session)
     longpoll = VkLongPoll(vk_session)
+    print('Authorization success.\nBot is online.\n----------------------')
+
+    available_langs = ['ar', 'cs', 'da', 'nl', 'en', 'fil', 'fi', 'fr', 'de', 'el', 'hi', 'hu', 'id', 'it', 'ja', 'ko', 'cmn', 'nb', 'pl', 'pt', 'ru', 'sk', 'es', 'sv', 'tr', 'uk', 'vi'] #список языков, доступных для озвучки гуглом
+    lang = "ru"
+
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.text:
             try:
-                lang = detectlanguage.simple_detect(event.text)
+            	#пытаемся определить язык, если пользователь ввёл символы, отправляем сообщение об ошибке
+                lang = detectlanguage.simple_detect(event.text)								
             except:
                 print('id{}: "{}"'.format(event.user_id, event.text), 'Error!', end='\n\n')
                 vk.messages.send(
@@ -26,8 +33,8 @@ def main():
                     message='Ошибка, введите текст.'
                 )
                 continue
-            
-            if lang == "sm": lang = "en"
+            #если язык для озвучки не доступен, ставим по дефолту русский и отправляем голосовое
+            if lang not in available_langs : lang = "ru"
             print('id{}: "{}"'.format(event.user_id, event.text), lang, end='\n')
             tts = gTTS(event.text, lang)
             name = "audio.mp3"
