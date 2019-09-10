@@ -15,10 +15,15 @@ def main():
     vk = vk_session.get_api()
     upload = VkUpload(vk_session)
     longpoll = VkLongPoll(vk_session)
+
     print('Authorization success.\nBot is online.\n----------------------')
 
-    available_langs = ['ar', 'cs', 'da', 'nl', 'en', 'fil', 'fi', 'fr', 'de', 'el', 'hi', 'hu', 'id', 'it', 'ja', 'ko', 'cmn', 'nb', 'pl', 'pt', 'ru', 'sk', 'es', 'sv', 'tr', 'uk', 'vi'] #список языков, доступных для озвучки гуглом
-    lang = "ru"
+    #список языков, доступных для озвучки гуглом
+    available_langs = [			
+    	'ar', 'cs', 'da', 'nl', 'en', 'fil', 'fi', 'fr', 'de',
+    	'el', 'hi', 'hu', 'id', 'it', 'ja', 'ko', 'cmn', 'nb',
+    	'pl', 'pt', 'ru', 'sk', 'es', 'sv', 'tr', 'uk', 'vi'
+    	] 
 
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.text:
